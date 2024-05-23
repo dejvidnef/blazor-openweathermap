@@ -1,0 +1,27 @@
+﻿@page "/"
+@using BlazorApp1.Services
+@inject WeatherService WeatherService
+
+<h3>Weather</h3>
+
+<input @bind="city" placeholder="Enter city name: " />
+<button @onclick="GetWeather">Get Weather</button>
+
+
+@if (weatherResponse != null) {
+    <div>
+        <p> Tempature: @weatherResponse.Main.Temp °C</p>
+        <p> Humidity: @weatherResponse.Main.Humidity %</p>
+        <p> Weather: @weatherResponse.Weather[0].Description </p>
+        <p> Wind speed: @weatherResponse.Wind.Speed m/s</p>
+    </div>
+}
+
+@code {
+    private string city;
+    private WeatherResponse weatherResponse;
+    private async Task GetWeather()
+    {
+        weatherResponse = await WeatherService.GetWeatherAsync(city);
+    }
+}
